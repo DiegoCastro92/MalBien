@@ -66,7 +66,6 @@ function obtenerVerdura(e) {
 
         //Si obtenemos respuesta la mostramos
         mostrarVerdura(datos);
-        console.log(datos);
       });
   }
 
