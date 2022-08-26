@@ -1,99 +1,106 @@
-const container = document.querySelector('.container');
-const resultado = document.querySelector('#resultado');
-const formulario = document.querySelector('#formulario');
+const container = document.querySelector(".container");
+const resultado = document.querySelector("#resultado");
+const formulario = document.querySelector("#formulario");
 
-window.addEventListener('load', () =>{
-    formulario.addEventListener('submit', obtenerVerdura);
-})
+window.addEventListener("load", () => {
+  formulario.addEventListener("submit", obtenerVerdura);
+});
 
-function obtenerVerdura(e){
-    e.preventDefault();
+function obtenerVerdura(e) {
+  e.preventDefault();
 
-    //Validar
-    const verdura = document.querySelector('#Verdura').value;
+  //Validar
+  const verdura = document.querySelector("#Verdura").value;
 
-    if(verdura === ''){
-        mostrarError('La verdura es obligatoria');
-        return;
-    }
-    //Consultar Api
-    consultarAPI(verdura);
+  if (verdura === "") {
+    mostrarError("La verdura es obligatoria");
+    return;
+  }
+  //Consultar Api
+  consultarAPI(verdura);
 
-    //mostrar error de campos obligatorios
-    function mostrarError(mensaje){
-        const alerta = document.querySelector('.bg-red-100');
+  //mostrar error de campos obligatorios
+  function mostrarError(mensaje) {
+    const alerta = document.querySelector(".bg-red-100");
 
-        if(!alerta){
-        //crear alerta
+    if (!alerta) {
+      //crear alerta
 
-        const alerta = document.createElement('div');
-        alerta.classList.add('bg-red-100', 'border-red-400', 'text-red-700', 'px-4', 'py-3', 'rounded', 'max-w-md', 'mx-auto', 'mt-6', 'text-center');
+      const alerta = document.createElement("div");
+      alerta.classList.add(
+        "bg-red-100",
+        "border-red-400",
+        "text-red-700",
+        "px-4",
+        "py-3",
+        "rounded",
+        "max-w-md",
+        "mx-auto",
+        "mt-6",
+        "text-center"
+      );
 
-        alerta.innerHTML = `
+      alerta.innerHTML = `
         <strong class="font-bold">Error!</strong>
         <span class="block">${mensaje}</span>
         `;
 
-        container.appendChild(alerta);
+      container.appendChild(alerta);
 
-        //Eliminamos la alerta a los 3 segundos.
-        setTimeout(() => {
-            alerta.remove();
-        }, 3000);
+      //Eliminamos la alerta a los 3 segundos.
+      setTimeout(() => {
+        alerta.remove();
+      }, 3000);
     }
-    }
+  }
 
-
-function consultarAPI(verdura){
-
-    const url = `https://vegies-api.herokuapp.com/api/vegi/${verdura}`;
+  function consultarAPI(verdura) {
+    const url = `https://vegis-api.onrender.com/api/vegi/${verdura}`;
 
     Spinner();
 
     fetch(url)
-        .then( respuesta => respuesta.json())
-        .then( datos => {
-            limpiarHTML();
+      .then((respuesta) => respuesta.json())
+      .then((datos) => {
+        limpiarHTML();
 
-            //Si obtenemos respuesta la mostramos
-            mostrarVerdura(datos)
-        })
-}
+        //Si obtenemos respuesta la mostramos
+        mostrarVerdura(datos);
+      });
+  }
 
-function mostrarVerdura(datos){
+  function mostrarVerdura(datos) {
     const { calories, fiber } = datos;
 
-    const calorias = (calories);
-    const fibra = (fiber);
-    
-    const caloriasValor = document.createElement('p');
+    const calorias = calories;
+    const fibra = fiber;
+
+    const caloriasValor = document.createElement("p");
     caloriasValor.textContent = `Calorias de la ${verdura} son de ${calorias}`;
-    caloriasValor.classList.add('font-bold', 'text-2xl');
+    caloriasValor.classList.add("font-bold", "text-2xl");
 
-    const fibraValor = document.createElement('p');
+    const fibraValor = document.createElement("p");
     fibraValor.innerHTML = `y la fibra de ${fibra}`;
-    fibraValor.classList.add('font-bold', 'text-xl');
+    fibraValor.classList.add("font-bold", "text-xl");
 
-    const resultadoDiv = document.createElement('div');
-    resultadoDiv.classList.add('text-center', 'text-white');
+    const resultadoDiv = document.createElement("div");
+    resultadoDiv.classList.add("text-center", "text-white");
     resultadoDiv.appendChild(caloriasValor);
     resultadoDiv.appendChild(fibraValor);
 
     resultado.appendChild(resultadoDiv);
+  }
 
-}
-
-function limpiarHTML(){
-    while(resultado.firstChild) {
-        resultado.removeChild(resultado.firstChild);
+  function limpiarHTML() {
+    while (resultado.firstChild) {
+      resultado.removeChild(resultado.firstChild);
     }
-}
+  }
 
-function Spinner(){
-
+  function Spinner() {
     limpiarHTML();
-    const divSpinner = document.createElement('div');
-    divSpinner.classList.add('sk-fading-circle');
+    const divSpinner = document.createElement("div");
+    divSpinner.classList.add("sk-fading-circle");
 
     divSpinner.innerHTML = `
         <div class="sk-circle1 sk-circle"></div>
@@ -111,5 +118,5 @@ function Spinner(){
     `;
 
     resultado.appendChild(divSpinner);
-}
+  }
 }
